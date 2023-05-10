@@ -1,0 +1,15 @@
+[kube-master]
+master1
+master2
+
+[etcd]
+master1
+master2
+
+[kube-node]
+worker1
+worker2
+
+[k8s-cluster:children]
+kube-master
+kube-node

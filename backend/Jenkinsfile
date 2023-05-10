@@ -1,0 +1,24 @@
+pipeline {
+    agent any
+    stages {
+        stage('Build') {
+            steps {
+                sh 'docker build -t my_flask_app .'
+            }
+        }
+        stage('Test') {
+            steps {
+                sh 'docker run --rm my_flask_app python -m pytest'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                sh 'docker tag my_flask_app:latest my_registry/my_flask_app:latest'
+                withCredentials([usernamePassword(credentialsId: 'my_registry', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                    sh 'docker login -u $USERNAME -p $PASSWORD my_registry'
+                    sh 'docker push my_registry/my_flask_app:latest'
+                }
+            }
+        }
+    }
+}

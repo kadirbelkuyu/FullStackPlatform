@@ -1,0 +1,5 @@
+- name: Kubernetes setup
+  hosts: all
+  become: true
+  roles:
+    - role: geerlingguy.kubernetes
