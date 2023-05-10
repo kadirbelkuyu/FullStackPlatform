@@ -25,3 +25,64 @@ This project demonstrates a full DevOps workflow for a simple web application. T
 ```bash
 git clone https://github.com/kadirbelkuyu/FullStackPlatform
 cd FullStackPlatform
+````
+## Run the Flask backend:
+
+```bash
+cd backend
+docker build -t flask-backend:latest .
+docker run -p 5000:5000 flask-backend:latest
+````
+## Run the React frontend:
+```bash
+cd frontend
+docker build -t react-frontend:latest .
+docker run -p 3000:3000 react-frontend:latest
+````
+## Run the PostgreSQL database:
+```bash 
+cd db
+docker build -t postgres-db:latest .
+docker run -p 5432:5432 postgres-db:latest
+````
+# Infrastructure Setup
+
+### Set up the infrastructure with Terraform and Ansible:
+
+```bash 
+cd terraform
+terraform init
+terraform apply
+cd ..
+cd ansible
+ansible-playbook -i hosts site.yml
+````
+### Set up the Kubernetes cluster with Kubespray:
+```bash 
+cd k8s
+ansible-playbook -i inventory/mycluster/hosts.yaml --become --become-user=root cluster.yml
+```
+
+### Deploy the application on the Kubernetes cluster:
+
+```bash 
+kubectl apply -f backend-deployment.yaml
+kubectl apply -f frontend-deployment.yaml
+kubectl apply -f db-deployment.yaml
+````
+### Set up monitoring with Prometheus and Grafana:
+
+```bash 
+kubectl apply -f prometheus-config.yaml
+kubectl apply -f grafana-dashboards/dashboard.json
+````
+
+### Contributing
+
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+Please make sure to update tests as appropriate.
+
+### License
+
+MIT
